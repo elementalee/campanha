@@ -2,18 +2,11 @@ package com.campanha.entity.request;
 
 public class CampanhaRequest {
 	
-	private Long id;
     private String nome;
     private String idTimeCoracao;
 	private String dtInicioVigencia;
 	private String dtFimVigencia;
 
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
     public String getNome() {
 		return nome;
 	}

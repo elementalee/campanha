@@ -135,17 +135,25 @@ public class CampanhaController {
 	 * @throws CampanhaException 
 	 */
 	@RequestMapping(value = { "/campanhas/atualizar", "/campanhas/atualizar/{idCampanha}" }, method = RequestMethod.PUT)
-	public void atualizarCampanha(@RequestBody CampanhaRequest campanhaReq) throws CampanhaException {
+	public void atualizarCampanha(
+			@RequestParam(value = "id", required = false) Optional<Long> id,  
+			@PathVariable(value = "idCampanha", required = false) Optional<Long> idCampanha,
+			@RequestBody CampanhaRequest campanhaReq) throws CampanhaException {
 
 		Campanha campanha = new Campanha();
-		campanha = campanhaRepo.findOne(campanhaReq.getId());
+		
+		if (id.isPresent()) {
+			campanha = campanhaRepo.findOne(id.get());
+		} else if (idCampanha.isPresent()) {
+			campanha = campanhaRepo.findOne(idCampanha.get());
+		}
 
 		if (campanha != null && campanha.getId() > 0) {
 			campanha.setNome(campanhaReq.getNome());
 			campanha.setIdTimeCoracao(campanhaReq.getIdTimeCoracao());
 			campanhaRepo.save(campanha);
 		} else {
-			throw new CampanhaException("Campanha de id: " + campanhaReq.getId() + " inexistente. Não foi possível atualizar." );
+			throw new CampanhaException("Campanha de id: (:" + id + ":" + idCampanha + ") inexistente. Não foi possível atualizar." );
 		}
 	}
 }
